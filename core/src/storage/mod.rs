@@ -124,6 +124,17 @@ pub struct StorageMetrics {
     pub average_throughput: f64,
 }
 
+impl StorageMetrics {
+    pub fn new(_config: ()) -> Self {
+        Self {
+            total_capacity: 0,
+            used_capacity: 0,
+            file_count: 0,
+            average_throughput: 0.0,
+        }
+    }
+}
+
 /// Requête de recherche simplifiée (temporaire)
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SearchQuery {
@@ -144,6 +155,66 @@ pub struct SearchResults {
     pub total_count: usize,
     /// Temps de recherche en millisecondes
     pub search_time_ms: u64,
+}
+
+/// Gestionnaire de réplication temporaire
+#[derive(Debug)]
+pub struct ReplicationManager {
+    // Placeholder for future implementation
+}
+
+impl ReplicationManager {
+    pub fn new(_config: ()) -> Self {
+        Self {}
+    }
+}
+
+/// Gestionnaire de distribution temporaire
+#[derive(Debug)]
+pub struct DistributionManager {
+    // Placeholder for future implementation
+}
+
+impl DistributionManager {
+    pub fn new(_config: ()) -> Self {
+        Self {}
+    }
+}
+
+/// Système de découverte de contenu temporaire
+#[derive(Debug)]
+pub struct ContentDiscovery {
+    // Placeholder for future implementation
+}
+
+impl ContentDiscovery {
+    pub fn new(_config: ()) -> Self {
+        Self {}
+    }
+}
+
+/// Stockage d'archive temporaire
+#[derive(Debug)]
+pub struct ArchiveStorage {
+    // Placeholder for future implementation
+}
+
+impl ArchiveStorage {
+    pub fn new(_config: ()) -> Result<Self> {
+        Ok(Self {})
+    }
+}
+
+/// Gestionnaire de bande passante temporaire
+#[derive(Debug)]
+pub struct BandwidthManager {
+    // Placeholder for future implementation
+}
+
+impl BandwidthManager {
+    pub fn new(_config: ()) -> Self {
+        Self {}
+    }
 }
 
 /// Configuration globale du système de stockage
@@ -244,6 +315,7 @@ impl StorageNodeInfo {
 }
 
 /// Interface principale pour le système de stockage distribué
+#[async_trait::async_trait]
 pub trait DistributedStorage {
     /// Stocke du contenu avec réplication automatique
     async fn store_content(
