@@ -214,7 +214,7 @@ impl SubscriptionRoot {
 // ============================================================================
 
 /// Archive GraphQL
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct Archive {
     pub id: String,
     pub url: String,
@@ -238,7 +238,7 @@ pub enum ArchiveStatus {
 }
 
 /// Métadonnées d'archive
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct ArchiveMetadata {
     pub title: Option<String>,
     pub description: Option<String>,
@@ -250,7 +250,7 @@ pub struct ArchiveMetadata {
 }
 
 /// Informations de stockage
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct StorageInfo {
     pub replicas: i32,
     pub locations: Vec<String>,
@@ -259,28 +259,28 @@ pub struct StorageInfo {
 }
 
 /// Montant de token
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct TokenAmount {
     pub amount: String,
     pub currency: String,
 }
 
 /// Connexion paginée pour les archives
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct ArchiveConnection {
     pub edges: Vec<ArchiveEdge>,
     pub page_info: PageInfo,
 }
 
 /// Edge pour une archive
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct ArchiveEdge {
     pub node: Archive,
     pub cursor: String,
 }
 
 /// Informations de pagination
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct PageInfo {
     pub has_next_page: bool,
     pub has_previous_page: bool,
@@ -339,7 +339,7 @@ pub struct ArchiveOptions {
 }
 
 /// Payload de création d'archive
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct CreateArchivePayload {
     pub archive: Archive,
     pub errors: Vec<String>,
@@ -353,21 +353,21 @@ pub struct UpdateArchiveInput {
 }
 
 /// Payload de mise à jour d'archive
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct UpdateArchivePayload {
     pub archive: Archive,
     pub errors: Vec<String>,
 }
 
 /// Payload de suppression d'archive
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct DeleteArchivePayload {
     pub success: bool,
     pub errors: Vec<String>,
 }
 
 /// Connexion de recherche
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct SearchConnection {
     pub edges: Vec<SearchEdge>,
     pub page_info: PageInfo,
@@ -376,14 +376,14 @@ pub struct SearchConnection {
 }
 
 /// Edge de recherche
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct SearchEdge {
     pub node: SearchResult,
     pub cursor: String,
 }
 
 /// Résultat de recherche
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct SearchResult {
     pub archive: Archive,
     pub relevance_score: f64,
@@ -391,7 +391,7 @@ pub struct SearchResult {
 }
 
 /// Facettes de recherche
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct SearchFacets {
     pub domains: Vec<FacetValue>,
     pub content_types: Vec<FacetValue>,
@@ -400,7 +400,7 @@ pub struct SearchFacets {
 }
 
 /// Valeur de facette
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct FacetValue {
     pub value: String,
     pub count: i32,
@@ -432,7 +432,7 @@ pub struct SizeRangeInput {
 }
 
 /// Statistiques du réseau
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct NetworkStats {
     pub total_nodes: i32,
     pub active_nodes: i32,
@@ -446,7 +446,7 @@ pub struct NetworkStats {
 }
 
 /// Nœud du réseau
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct Node {
     pub id: String,
     pub status: NodeStatus,
@@ -466,7 +466,7 @@ pub enum NodeStatus {
 }
 
 /// Capacité de stockage
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct StorageCapacity {
     pub total: i64,
     pub used: i64,
@@ -474,7 +474,7 @@ pub struct StorageCapacity {
 }
 
 /// Performance de nœud
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct NodePerformance {
     pub bandwidth: i64,
     pub latency: i32,
@@ -482,7 +482,7 @@ pub struct NodePerformance {
 }
 
 /// Utilisateur
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct User {
     pub id: String,
     pub public_key: Option<String>,
@@ -494,7 +494,7 @@ pub struct User {
 }
 
 /// Statistiques d'usage
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct UsageStats {
     pub archives_created: i32,
     pub storage_used: i64,
@@ -509,14 +509,14 @@ pub struct UpdateProfileInput {
 }
 
 /// Payload de mise à jour du profil
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct UpdateProfilePayload {
     pub user: User,
     pub errors: Vec<String>,
 }
 
 /// Bloc de la blockchain
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct Block {
     pub height: i64,
     pub hash: String,
@@ -528,7 +528,7 @@ pub struct Block {
 }
 
 /// Transaction
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct Transaction {
     pub hash: String,
     pub transaction_type: TransactionType,
@@ -552,14 +552,14 @@ pub enum TransactionType {
 }
 
 /// Connexion de blocs
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct BlockConnection {
     pub edges: Vec<BlockEdge>,
     pub page_info: PageInfo,
 }
 
 /// Edge de bloc
-#[derive(SimpleObject)]
+#[derive(SimpleObject, Clone)]
 pub struct BlockEdge {
     pub node: Block,
     pub cursor: String,

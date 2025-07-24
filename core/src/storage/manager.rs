@@ -330,8 +330,9 @@ impl StorageManager {
                             let mut replication = self.replication_manager.lock().await;
                             if let Some(strategy) = replication.get_strategy(content_hash) {
                                 let mut new_strategy = strategy.clone();
-                                new_strategy.max_replicas = new_strategy.max_replicas.min(*target_replicas);
-                                replication.update_strategy(*content_hash, new_strategy);
+                                let current_max = new_strategy.max_replicas();
+                                new_strategy.set_max_replicas(current_max.min(*target_replicas));
+                                replication.update_strategy(content_hash, new_strategy);
                                 actions_performed += 1;
                             }
                         },
@@ -641,7 +642,11 @@ impl StorageManager {
         };
 
         let total_content_count = content_cache.len() as u64;
-        let top_content = discovery.get_popular_content(10);
+        let popular_hashes = discovery.get_popular_content(10);
+        let top_content: Vec<(Hash, u64)> = popular_hashes.into_iter()
+            .enumerate()
+            .map(|(i, hash)| (hash, (100 - i as u64).max(1)))
+            .collect();
 
         Ok(StorageStats {
             total_content_count,
@@ -763,13 +768,12 @@ pub enum AlertSeverity {
 pub struct DetailedMetrics {
     /// Métriques de stockage simplifiées
     pub storage_metrics: StorageMetrics,
-    // TODO: Implement when these modules exist
-    // /// Métriques de réplication
-    // pub replication_metrics: super::replication::ReplicationMetrics,
-    // /// Statistiques de distribution
-    // pub distribution_stats: super::distribution::DistributionStats,
-    // /// Statistiques de découverte
-    // pub discovery_stats: super::discovery::DiscoveryStats,
+    /// Métriques de réplication
+    pub replication_metrics: StorageMetrics,
+    /// Statistiques de distribution
+    pub distribution_stats: StorageMetrics,
+    /// Statistiques de découverte
+    pub discovery_stats: StorageMetrics,
 }
 
 #[cfg(test)]

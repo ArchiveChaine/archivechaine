@@ -96,7 +96,7 @@ pub enum ReplicationStrategy {
     /// Réplication fixe
     Fixed { copies: u8 },
     /// Réplication géographique
-    Geographic { regions: Vec<String> },
+    Geographic { regions: Vec<String>, min_copies: u8, max_copies: u8 },
 }
 
 impl ReplicationStrategy {
@@ -107,6 +107,24 @@ impl ReplicationStrategy {
             ContentImportance::High => Self::PopularityBased { min_copies: 5, max_copies: 10 },
             ContentImportance::Medium => Self::PopularityBased { min_copies: 3, max_copies: 7 },
             ContentImportance::Low => Self::Fixed { copies: 3 },
+        }
+    }
+    
+    /// Obtient le nombre maximum de répliques
+    pub fn max_replicas(&self) -> u8 {
+        match self {
+            Self::PopularityBased { max_copies, .. } => *max_copies,
+            Self::Fixed { copies } => *copies,
+            Self::Geographic { max_copies, .. } => *max_copies,
+        }
+    }
+    
+    /// Définit le nombre maximum de répliques
+    pub fn set_max_replicas(&mut self, new_max: u8) {
+        match self {
+            Self::PopularityBased { max_copies, .. } => *max_copies = new_max,
+            Self::Fixed { copies } => *copies = new_max,
+            Self::Geographic { max_copies, .. } => *max_copies = new_max,
         }
     }
 }
