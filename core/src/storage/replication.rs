@@ -102,6 +102,19 @@ pub struct ReplicationStrategy {
 }
 
 impl ReplicationStrategy {
+    /// Crée une stratégie de réplication fixe avec un nombre spécifique de répliques
+    pub fn fixed(replica_count: u32) -> Self {
+        Self {
+            min_replicas: replica_count,
+            max_replicas: replica_count,
+            popularity_threshold: 1000.0,
+            geographic_distribution: false,
+            content_importance: ContentImportance::Medium,
+            placement_preferences: PlacementPreferences::default(),
+            last_evaluated: SystemTime::now(),
+        }
+    }
+
     /// Crée une nouvelle stratégie basée sur les métadonnées
     pub fn from_metadata(metadata: &ContentMetadata, config: &ReplicationConfig) -> Self {
         let base_replicas = config.min_replicas;
@@ -184,6 +197,18 @@ impl PlacementPreferences {
             preferred_storage_types,
             excluded_nodes: Vec::new(),
             geographic_affinity: true,
+        }
+    }
+}
+
+impl Default for PlacementPreferences {
+    fn default() -> Self {
+        Self {
+            preferred_regions: Vec::new(),
+            preferred_node_types: vec![NodeType::FullArchive, NodeType::LightStorage],
+            preferred_storage_types: vec![StorageType::Warm],
+            excluded_nodes: Vec::new(),
+            geographic_affinity: false,
         }
     }
 }

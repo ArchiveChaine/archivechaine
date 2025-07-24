@@ -16,7 +16,10 @@ use async_trait::async_trait;
 
 use crate::crypto::{Hash, PublicKey, PrivateKey, generate_keypair};
 use crate::consensus::{NodeId, ProofOfArchive, ConsensusConfig};
-use crate::storage::{StorageManager, StorageConfig};
+use crate::storage::{
+    StorageManager, StorageConfig, StoragePolicy, ReplicationStrategy,
+    AlertThresholds
+};
 use crate::blockchain::{Blockchain, BlockchainConfig};
 use crate::error::Result;
 use super::{
@@ -318,13 +321,13 @@ impl NodeManager {
         // Initialise le gestionnaire de stockage
         let storage_manager = StorageManager::new(
             config.storage_config.clone(),
-            crate::storage::manager::StoragePolicy {
-                default_replication_strategy: crate::storage::replication::ReplicationStrategy::Fixed {
-                    replica_count: config.cluster_config.default_replication_factor,
-                },
+            StoragePolicy {
+                default_replication_strategy: ReplicationStrategy::fixed(
+                    config.cluster_config.default_replication_factor,
+                ),
                 node_preferences: HashMap::new(),
                 retention_policies: Vec::new(),
-                alert_thresholds: crate::storage::manager::AlertThresholds::default(),
+                alert_thresholds: AlertThresholds::default(),
             },
         ).await?;
 
@@ -387,13 +390,13 @@ impl NodeManager {
                     // Dans une vraie implémentation, on partagerait ou créerait une instance séparée
                     StorageManager::new(
                         self.config.storage_config.clone(),
-                        crate::storage::manager::StoragePolicy {
-                            default_replication_strategy: crate::storage::replication::ReplicationStrategy::Fixed {
-                                replica_count: self.config.cluster_config.default_replication_factor,
-                            },
+                        StoragePolicy {
+                            default_replication_strategy: ReplicationStrategy::fixed(
+                                self.config.cluster_config.default_replication_factor,
+                            ),
                             node_preferences: HashMap::new(),
                             retention_policies: Vec::new(),
-                            alert_thresholds: crate::storage::manager::AlertThresholds::default(),
+                            alert_thresholds: AlertThresholds::default(),
                         },
                     ).await?
                 };
@@ -425,13 +428,13 @@ impl NodeManager {
 
                 let storage_manager = StorageManager::new(
                     self.config.storage_config.clone(),
-                    crate::storage::manager::StoragePolicy {
-                        default_replication_strategy: crate::storage::replication::ReplicationStrategy::Fixed {
-                            replica_count: self.config.cluster_config.default_replication_factor,
-                        },
+                    StoragePolicy {
+                        default_replication_strategy: ReplicationStrategy::fixed(
+                            self.config.cluster_config.default_replication_factor,
+                        ),
                         node_preferences: HashMap::new(),
                         retention_policies: Vec::new(),
-                        alert_thresholds: crate::storage::manager::AlertThresholds::default(),
+                        alert_thresholds: AlertThresholds::default(),
                     },
                 ).await?;
 
@@ -567,7 +570,7 @@ impl NodeManager {
 
     /// Redémarre un nœud
     pub async fn restart_node(&self, node_id: &NodeId) -> Result<()> {
-        log::info!("Redémarrage du nœud {:?}", node_id);
+        tracing::info!("Redémarrage du nœud {:?}", node_id);
 
         // Démarre une tâche de maintenance
         {
@@ -617,7 +620,7 @@ impl NodeManager {
                     health_results.insert(node_id.clone(), health);
                 },
                 Err(e) => {
-                    log::error!("Erreur health check nœud {:?}: {}", node_id, e);
+                    tracing::error!("Erreur health check nœud {:?}: {}", node_id, e);
                     
                     // Enregistre l'événement d'erreur
                     self.log_event(NodeEvent {
@@ -637,16 +640,16 @@ impl NodeManager {
     /// Gère le basculement automatique
     pub async fn handle_node_failure(&self, failed_node_id: &NodeId) -> Result<()> {
         if self.config.cluster_config.failover_strategy != FailoverStrategy::Automatic {
-            log::info!("Basculement automatique désactivé pour le nœud {:?}", failed_node_id);
+            tracing::info!("Basculement automatique désactivé pour le nœud {:?}", failed_node_id);
             return Ok(());
         }
 
-        log::warn!("Gestion de la panne du nœud {:?}", failed_node_id);
+        tracing::warn!("Gestion de la panne du nœud {:?}", failed_node_id);
 
         // Tente de redémarrer le nœud
         match self.restart_node(failed_node_id).await {
             Ok(()) => {
-                log::info!("Nœud {:?} redémarré avec succès", failed_node_id);
+                tracing::info!("Nœud {:?} redémarré avec succès", failed_node_id);
                 
                 self.log_event(NodeEvent {
                     timestamp: chrono::Utc::now(),
@@ -657,7 +660,7 @@ impl NodeManager {
                 }).await;
             },
             Err(e) => {
-                log::error!("Échec du redémarrage du nœud {:?}: {}", failed_node_id, e);
+                tracing::error!("Échec du redémarrage du nœud {:?}: {}", failed_node_id, e);
                 
                 // Si le redémarrage échoue, créer un nouveau nœud de remplacement
                 self.create_replacement_node(failed_node_id).await?;
@@ -705,7 +708,7 @@ impl NodeManager {
         // Démarre le nouveau nœud
         self.start_node(&replacement_id).await?;
 
-        log::info!("Nœud de remplacement {:?} créé pour remplacer {:?}", replacement_id, failed_node_id);
+        tracing::info!("Nœud de remplacement {:?} créé pour remplacer {:?}", replacement_id, failed_node_id);
 
         self.log_event(NodeEvent {
             timestamp: chrono::Utc::now(),
@@ -739,6 +742,8 @@ impl NodeManager {
                     HealthStatus::Healthy => active_nodes += 1,
                     HealthStatus::Warning => active_nodes += 1, // Considéré comme actif
                     HealthStatus::Critical => failed_nodes += 1,
+                    HealthStatus::Unresponsive => failed_nodes += 1,
+                    HealthStatus::Recovering => active_nodes += 1, // En cours de récupération mais actif
                 },
                 Err(_) => failed_nodes += 1,
             }
@@ -771,7 +776,7 @@ impl NodeManager {
 
     /// Enregistre un événement
     async fn log_event(&self, event: NodeEvent) {
-        log::info!("Événement nœud: {:?} - {}", event.event_type, event.message);
+        tracing::info!("Événement nœud: {:?} - {}", event.event_type, event.message);
         
         let mut events = self.recent_events.write().await;
         events.push(event);
@@ -803,7 +808,7 @@ impl NodeManager {
 
         for node_id in node_ids {
             if let Err(e) = self.start_node(&node_id).await {
-                log::error!("Erreur démarrage nœud {:?}: {}", node_id, e);
+                tracing::error!("Erreur démarrage nœud {:?}: {}", node_id, e);
             }
         }
 
@@ -819,7 +824,7 @@ impl NodeManager {
 
         for node_id in node_ids {
             if let Err(e) = self.stop_node(&node_id).await {
-                log::error!("Erreur arrêt nœud {:?}: {}", node_id, e);
+                tracing::error!("Erreur arrêt nœud {:?}: {}", node_id, e);
             }
         }
 

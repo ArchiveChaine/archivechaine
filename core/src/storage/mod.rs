@@ -17,7 +17,10 @@ pub mod bandwidth;
 pub mod metrics;
 
 // Re-exports publics
-pub use manager::{StorageManager, StorageConfig, StorageStats};
+pub use manager::{
+    StorageManager, StorageConfig, StorageStats, StoragePolicy,
+    AlertThresholds, RetentionPolicy
+};
 pub use replication::{
     ReplicationStrategy, ReplicationManager, ContentImportance, 
     ReplicationMetrics, AdaptiveReplication
@@ -28,7 +31,7 @@ pub use distribution::{
 };
 pub use discovery::{
     ContentDiscovery, DistributedHashTable, ContentIndex, SearchCache,
-    PopularityTracker, SearchQuery, SearchResult
+    PopularityTracker, SearchQuery, SearchResult, SearchResults
 };
 pub use archive::{
     ArchiveStorage, CompressionConfig, EncryptionConfig, ChunkManager,
@@ -42,6 +45,8 @@ pub use metrics::{
     StorageMetrics, PerformanceMetrics, HealthMetrics, AlertManager,
     MetricsCollector, CapacityMonitor
 };
+
+
 
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;

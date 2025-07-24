@@ -95,7 +95,7 @@ impl ProofOfArchive {
             match self.calculate_consensus_score(node_id) {
                 Ok(score) => scores.push(score),
                 Err(e) => {
-                    log::warn!("Erreur lors du calcul du score pour le nœud {:?}: {}", node_id, e);
+                    tracing::warn!("Erreur lors du calcul du score pour le nœud {:?}: {}", node_id, e);
                     continue;
                 }
             }

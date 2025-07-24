@@ -34,6 +34,9 @@ pub enum CoreError {
 
     #[error("Entrée invalide: {0}")]
     InvalidInput(String),
+
+    #[error("Élément non trouvé: {message}")]
+    NotFound { message: String },
 }
 
 /// Alias pour CoreError pour compatibilité
