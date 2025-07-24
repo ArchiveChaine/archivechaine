@@ -55,6 +55,9 @@ use crate::crypto::{Hash, PublicKey};
 use crate::consensus::NodeId;
 use crate::error::Result;
 
+// Import ContentImportance for use in ContentMetadata
+use replication::ContentImportance;
+
 /// Types de nœuds de stockage
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum NodeType {
@@ -212,6 +215,10 @@ pub struct ContentMetadata {
     pub size: u64,
     /// Type MIME du contenu
     pub content_type: String,
+    /// Titre du contenu
+    pub title: Option<String>,
+    /// Description du contenu
+    pub description: Option<String>,
     /// Importance du contenu
     pub importance: ContentImportance,
     /// Popularité actuelle (accès/jour)

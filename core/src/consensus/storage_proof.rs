@@ -11,13 +11,26 @@ use crate::state::{MerkleTree, MerkleProof};
 use crate::error::Result;
 use super::{NodeId, ConsensusConfig, ConsensusProof};
 
+/// Métriques de stockage pour le consensus (version simplifiée)
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct ConsensusConsensusStorageMetrics {
+    /// Capacité totale de stockage
+    pub total_capacity: u64,
+    /// Espace utilisé
+    pub used_capacity: u64,
+    /// Nombre de fichiers stockés
+    pub file_count: u64,
+    /// Débit moyen
+    pub average_throughput: f64,
+}
+
 /// Gestionnaire des preuves de stockage
 #[derive(Debug)]
 pub struct StorageProofManager {
     /// Configuration du consensus
     config: ConsensusConfig,
     /// Métriques de stockage par nœud
-    node_metrics: HashMap<NodeId, StorageMetrics>,
+    node_metrics: HashMap<NodeId, ConsensusStorageMetrics>,
     /// Défis actifs par nœud
     active_challenges: HashMap<NodeId, StorageChallenge>,
     /// Historique des preuves validées
@@ -28,7 +41,7 @@ pub struct StorageProofManager {
 
 /// Métriques de stockage pour un nœud
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct StorageMetrics {
+pub struct ConsensusStorageMetrics {
     /// Nœud concerné
     pub node_id: NodeId,
     /// Taille totale stockée (bytes)
@@ -142,7 +155,7 @@ impl StorageProofManager {
     pub fn register_storage(&mut self, node_id: NodeId, archive_hash: Hash, size_bytes: u64) {
         // Met à jour les métriques du nœud
         let metrics = self.node_metrics.entry(node_id.clone()).or_insert_with(|| {
-            StorageMetrics {
+            ConsensusStorageMetrics {
                 node_id: node_id.clone(),
                 total_stored_bytes: 0,
                 archive_count: 0,
