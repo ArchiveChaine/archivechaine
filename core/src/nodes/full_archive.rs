@@ -17,8 +17,8 @@ use async_trait::async_trait;
 use crate::crypto::{Hash, PublicKey, PrivateKey};
 use crate::consensus::{NodeId, ConsensusScore, ProofOfArchive};
 use crate::storage::{
-    StorageManager, StorageNodeInfo, ContentMetadata, DistributedStorage,
-    StorageType, NodeStatus
+    // StorageManager, StorageNodeInfo, ContentMetadata, DistributedStorage,
+    // StorageType, NodeStatus
 };
 use crate::blockchain::Blockchain;
 use crate::error::Result;
@@ -761,7 +761,7 @@ impl FullArchiveConfig {
 mod tests {
     use super::*;
     use crate::crypto::generate_keypair;
-    use crate::storage::StorageConfig;
+    // use crate::storage::StorageConfig;
     use crate::consensus::ConsensusConfig;
     use crate::blockchain::BlockchainConfig;
 

@@ -17,29 +17,29 @@ use crate::error::Result;
 use super::{
     ContentMetadata, StorageNodeInfo, StorageResult, StorageStatus, AvailabilityInfo,
     DistributedStorage, NodeType, StorageType,
-    replication::{ReplicationManager, ReplicationConfig, ReplicationStrategy},
-    distribution::{DistributionManager, DistributionConfig},
-    discovery::{ContentDiscovery, DiscoveryConfig, SearchQuery, SearchResults},
-    archive::{ArchiveStorage, ArchiveConfig},
-    bandwidth::{BandwidthManager, BandwidthConfig},
-    metrics::{StorageMetrics, MetricsConfig},
+    // replication::{ReplicationManager, ReplicationConfig, ReplicationStrategy},
+    // distribution::{DistributionManager, DistributionConfig},
+    // discovery::{ContentDiscovery, DiscoveryConfig, SearchQuery, SearchResults},
+    // archive::{ArchiveStorage, ArchiveConfig},
+    // bandwidth::{BandwidthManager, BandwidthConfig},
+    // metrics::{StorageMetrics, MetricsConfig},
 };
 
 /// Configuration principale du gestionnaire de stockage
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StorageConfig {
-    /// Configuration de réplication
-    pub replication: ReplicationConfig,
-    /// Configuration de distribution géographique
-    pub distribution: DistributionConfig,
-    /// Configuration de découverte de contenu
-    pub discovery: DiscoveryConfig,
-    /// Configuration d'archivage
-    pub archive: ArchiveConfig,
-    /// Configuration de bande passante
-    pub bandwidth: BandwidthConfig,
-    /// Configuration des métriques
-    pub metrics: MetricsConfig,
+    // /// Configuration de réplication
+    // pub replication: ReplicationConfig,
+    // /// Configuration de distribution géographique
+    // pub distribution: DistributionConfig,
+    // /// Configuration de découverte de contenu
+    // pub discovery: DiscoveryConfig,
+    // /// Configuration d'archivage
+    // pub archive: ArchiveConfig,
+    // /// Configuration de bande passante
+    // pub bandwidth: BandwidthConfig,
+    // /// Configuration des métriques
+    // pub metrics: MetricsConfig,
     /// Intervalle de synchronisation des nœuds
     pub node_sync_interval: Duration,
     /// Intervalle d'optimisation automatique
@@ -51,12 +51,12 @@ pub struct StorageConfig {
 impl Default for StorageConfig {
     fn default() -> Self {
         Self {
-            replication: ReplicationConfig::default(),
-            distribution: DistributionConfig::default(),
-            discovery: DiscoveryConfig::default(),
-            archive: ArchiveConfig::default(),
-            bandwidth: BandwidthConfig::default(),
-            metrics: MetricsConfig::default(),
+            // replication: ReplicationConfig::default(),
+            // distribution: DistributionConfig::default(),
+            // discovery: DiscoveryConfig::default(),
+            // archive: ArchiveConfig::default(),
+            // bandwidth: BandwidthConfig::default(),
+            // metrics: MetricsConfig::default(),
             node_sync_interval: Duration::from_secs(60), // 1 minute
             optimization_interval: Duration::from_secs(3600), // 1 heure
             critical_redundancy_threshold: 2, // Moins de 2 répliques = critique
@@ -90,8 +90,8 @@ pub struct StorageStats {
 /// Politique de stockage
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StoragePolicy {
-    /// Stratégie de réplication par défaut
-    pub default_replication_strategy: ReplicationStrategy,
+    // /// Stratégie de réplication par défaut
+    // pub default_replication_strategy: ReplicationStrategy,
     /// Types de nœuds préférés par type de contenu
     pub node_preferences: HashMap<String, Vec<NodeType>>,
     /// Politiques de rétention
@@ -156,18 +156,18 @@ pub struct StorageManager {
     config: StorageConfig,
     /// Politique de stockage
     policy: StoragePolicy,
-    /// Gestionnaire de réplication
-    replication_manager: Arc<Mutex<ReplicationManager>>,
-    /// Gestionnaire de distribution
-    distribution_manager: Arc<Mutex<DistributionManager>>,
-    /// Système de découverte
-    discovery_system: Arc<Mutex<ContentDiscovery>>,
-    /// Stockage d'archives
-    archive_storage: Arc<Mutex<ArchiveStorage>>,
-    /// Gestionnaire de bande passante
-    bandwidth_manager: Arc<Mutex<BandwidthManager>>,
-    /// Système de métriques
-    metrics_system: Arc<Mutex<StorageMetrics>>,
+    // /// Gestionnaire de réplication
+    // replication_manager: Arc<Mutex<ReplicationManager>>,
+    // /// Gestionnaire de distribution
+    // distribution_manager: Arc<Mutex<DistributionManager>>,
+    // /// Système de découverte
+    // discovery_system: Arc<Mutex<ContentDiscovery>>,
+    // /// Stockage d'archives
+    // archive_storage: Arc<Mutex<ArchiveStorage>>,
+    // /// Gestionnaire de bande passante
+    // bandwidth_manager: Arc<Mutex<BandwidthManager>>,
+    // /// Système de métriques
+    // metrics_system: Arc<Mutex<StorageMetrics>>,
     /// Nœuds de stockage disponibles
     available_nodes: Arc<RwLock<HashMap<NodeId, StorageNodeInfo>>>,
     /// Cache des métadonnées de contenu
