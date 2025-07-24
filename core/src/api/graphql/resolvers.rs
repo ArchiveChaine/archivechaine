@@ -7,8 +7,8 @@ use futures_util::Stream;
 use std::collections::HashMap;
 use std::pin::Pin;
 
-use crate::api::types::*;
-use super::schema::*;
+use crate::api::types;
+use super::schema::{self, *};
 
 /// Resolver pour les archives
 pub struct ArchiveResolver;
@@ -381,48 +381,48 @@ impl SubscriptionResolver {
 }
 
 /// Helpers pour la conversion des types
-impl From<crate::api::types::ArchiveStatus> for ArchiveStatus {
-    fn from(status: crate::api::types::ArchiveStatus) -> Self {
+impl From<types::ArchiveStatus> for ArchiveStatus {
+    fn from(status: types::ArchiveStatus) -> Self {
         match status {
-            crate::api::types::ArchiveStatus::Pending => ArchiveStatus::Pending,
-            crate::api::types::ArchiveStatus::Processing => ArchiveStatus::Processing,
-            crate::api::types::ArchiveStatus::Completed => ArchiveStatus::Completed,
-            crate::api::types::ArchiveStatus::Failed => ArchiveStatus::Failed,
-            crate::api::types::ArchiveStatus::Expired => ArchiveStatus::Expired,
+            types::ArchiveStatus::Pending => ArchiveStatus::Pending,
+            types::ArchiveStatus::Processing => ArchiveStatus::Processing,
+            types::ArchiveStatus::Completed => ArchiveStatus::Completed,
+            types::ArchiveStatus::Failed => ArchiveStatus::Failed,
+            types::ArchiveStatus::Expired => ArchiveStatus::Expired,
         }
     }
 }
 
-impl From<ArchiveStatus> for crate::api::types::ArchiveStatus {
+impl From<ArchiveStatus> for types::ArchiveStatus {
     fn from(status: ArchiveStatus) -> Self {
         match status {
-            ArchiveStatus::Pending => crate::api::types::ArchiveStatus::Pending,
-            ArchiveStatus::Processing => crate::api::types::ArchiveStatus::Processing,
-            ArchiveStatus::Completed => crate::api::types::ArchiveStatus::Completed,
-            ArchiveStatus::Failed => crate::api::types::ArchiveStatus::Failed,
-            ArchiveStatus::Expired => crate::api::types::ArchiveStatus::Expired,
+            ArchiveStatus::Pending => types::ArchiveStatus::Pending,
+            ArchiveStatus::Processing => types::ArchiveStatus::Processing,
+            ArchiveStatus::Completed => types::ArchiveStatus::Completed,
+            ArchiveStatus::Failed => types::ArchiveStatus::Failed,
+            ArchiveStatus::Expired => types::ArchiveStatus::Expired,
         }
     }
 }
 
-impl From<crate::api::types::NodeStatus> for NodeStatus {
-    fn from(status: crate::api::types::NodeStatus) -> Self {
+impl From<types::NodeStatus> for NodeStatus {
+    fn from(status: types::NodeStatus) -> Self {
         match status {
-            crate::api::types::NodeStatus::Active => NodeStatus::Active,
-            crate::api::types::NodeStatus::Inactive => NodeStatus::Inactive,
-            crate::api::types::NodeStatus::Syncing => NodeStatus::Syncing,
-            crate::api::types::NodeStatus::Maintenance => NodeStatus::Maintenance,
+            types::NodeStatus::Active => NodeStatus::Active,
+            types::NodeStatus::Inactive => NodeStatus::Inactive,
+            types::NodeStatus::Syncing => NodeStatus::Syncing,
+            types::NodeStatus::Maintenance => NodeStatus::Maintenance,
         }
     }
 }
 
-impl From<NodeStatus> for crate::api::types::NodeStatus {
+impl From<NodeStatus> for types::NodeStatus {
     fn from(status: NodeStatus) -> Self {
         match status {
-            NodeStatus::Active => crate::api::types::NodeStatus::Active,
-            NodeStatus::Inactive => crate::api::types::NodeStatus::Inactive,
-            NodeStatus::Syncing => crate::api::types::NodeStatus::Syncing,
-            NodeStatus::Maintenance => crate::api::types::NodeStatus::Maintenance,
+            NodeStatus::Active => types::NodeStatus::Active,
+            NodeStatus::Inactive => types::NodeStatus::Inactive,
+            NodeStatus::Syncing => types::NodeStatus::Syncing,
+            NodeStatus::Maintenance => types::NodeStatus::Maintenance,
         }
     }
 }

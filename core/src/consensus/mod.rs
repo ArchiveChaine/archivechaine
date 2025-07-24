@@ -13,8 +13,8 @@ pub mod leader_selection;
 pub mod validator;
 pub mod rewards;
 
-pub use proof_of_archive::{ProofOfArchive, ConsensusScore, ConsensusConfig};
-pub use storage_proof::{StorageProofManager, StorageChallenge, StorageChallengeResponse, ConsensusStorageMetrics};
+pub use proof_of_archive::{ProofOfArchive};
+pub use storage_proof::{StorageProofManager, StorageChallenge, StorageChallengeResponse, NodeStorageMetrics, StorageMetrics};
 pub use bandwidth_proof::{BandwidthProofManager, BandwidthMetrics, BandwidthScore};
 pub use longevity_proof::{LongevityProofManager, LongevityMetrics, LongevityBonus};
 pub use leader_selection::{LeaderSelector, ValidatorInfo, LeaderElectionResult};

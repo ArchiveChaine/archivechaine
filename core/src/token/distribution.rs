@@ -378,7 +378,7 @@ impl TokenDistribution {
 
         // Distribuer aux bénéficiaires
         for (recipient, amount) in &recipients {
-            token.mint(recipient, *amount, tx_hash)?;
+            token.mint(recipient, *amount, tx_hash.clone())?;
         }
 
         // Mettre à jour le pool

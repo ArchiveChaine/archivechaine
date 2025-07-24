@@ -205,16 +205,8 @@ pub mod state;
 pub mod transaction;
 pub mod block;
 
-// Storage and consensus (re-exported for easier access)
-pub mod storage {
-    //! Distributed storage system
-    //!
-    //! Re-export of storage types and functions from the consensus module
-    //! for easier access and better organization.
-    
-    pub use crate::consensus::*;
-}
-
+// Storage and consensus  
+pub mod storage;
 pub mod consensus;
 
 // Economic system

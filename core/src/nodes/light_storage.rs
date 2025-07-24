@@ -18,8 +18,8 @@ use regex::Regex;
 use crate::crypto::{Hash, PublicKey, PrivateKey};
 use crate::consensus::{NodeId, ConsensusScore};
 use crate::storage::{
-    // StorageManager, StorageNodeInfo, ContentMetadata, DistributedStorage,
-    // StorageType, NodeStatus
+    StorageManager, StorageNodeInfo, ContentMetadata, DistributedStorage,
+    StorageType, NodeStatus
 };
 use crate::error::Result;
 use super::{

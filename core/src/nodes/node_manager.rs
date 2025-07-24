@@ -17,8 +17,8 @@ use async_trait::async_trait;
 use crate::crypto::{Hash, PublicKey, PrivateKey, generate_keypair};
 use crate::consensus::{NodeId, ProofOfArchive, ConsensusConfig};
 use crate::storage::{
-    // StorageManager, StorageConfig, StoragePolicy, ReplicationStrategy,
-    // AlertThresholds
+    StorageManager, StorageConfig, StoragePolicy, 
+    AlertThresholds, ReplicationStrategy
 };
 use crate::blockchain::{Blockchain, BlockchainConfig};
 use crate::error::Result;

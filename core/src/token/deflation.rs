@@ -341,7 +341,7 @@ impl DeflationaryMechanisms {
 
         if burn_amount > 0 {
             // Brûler les tokens depuis le système
-            token.burn(&super::system_address(), burn_amount, tx_hash)?;
+            token.burn(&super::system_address(), burn_amount, tx_hash.clone())?;
 
             // Enregistrer le burn
             self.burn_history.push(BurnRecord {

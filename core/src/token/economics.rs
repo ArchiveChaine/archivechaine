@@ -632,7 +632,7 @@ impl EconomicModel {
         let scenario = self.simulator.scenarios.get(scenario_name)
             .ok_or_else(|| TokenOperationError::Internal {
                 message: format!("Scénario '{}' non trouvé", scenario_name),
-            })?;
+            })?.clone();
 
         let mut timeline_data = Vec::new();
         let mut current_metrics = self.metrics.clone();
