@@ -134,17 +134,18 @@ pub enum SerializationError {
     UnsupportedFormat { format: String },
 }
 
-impl From<cbor4ii::EncodeError> for SerializationError {
-    fn from(err: cbor4ii::EncodeError) -> Self {
-        SerializationError::Cbor(err.to_string())
-    }
-}
+// TODO: Fix cbor4ii error types when cbor4ii is properly integrated
+// impl From<cbor4ii::EncodeError> for SerializationError {
+//     fn from(err: cbor4ii::EncodeError) -> Self {
+//         SerializationError::Cbor(err.to_string())
+//     }
+// }
 
-impl From<cbor4ii::DecodeError> for SerializationError {
-    fn from(err: cbor4ii::DecodeError) -> Self {
-        SerializationError::Cbor(err.to_string())
-    }
-}
+// impl From<cbor4ii::DecodeError> for SerializationError {
+//     fn from(err: cbor4ii::DecodeError) -> Self {
+//         SerializationError::Cbor(err.to_string())
+//     }
+// }
 
 /// Erreurs de consensus
 #[derive(Error, Debug)]

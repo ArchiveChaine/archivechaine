@@ -20,7 +20,7 @@ use std::sync::Arc;
 use tokio::sync::RwLock;
 
 use crate::api::{ApiResult, server::ServerState};
-use handler::{WebSocketHandler, ConnectionManager};
+use connection::ConnectionManager;
 use messages::*;
 
 // Re-exports

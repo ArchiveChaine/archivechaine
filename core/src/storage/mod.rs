@@ -88,35 +88,93 @@ pub enum StorageType {
     Cold,
 }
 
-/// Configuration globale du système de stockage
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct GlobalStorageConfig {
-    /// Configuration de réplication
-    pub replication: replication::ReplicationConfig,
-    /// Configuration de distribution géographique
-    pub distribution: distribution::DistributionConfig,
-    /// Configuration de découverte de contenu
-    pub discovery: discovery::DiscoveryConfig,
-    /// Configuration d'archivage
-    pub archive: archive::ArchiveConfig,
-    /// Configuration de bande passante
-    pub bandwidth: bandwidth::BandwidthConfig,
-    /// Configuration des métriques
-    pub metrics: metrics::MetricsConfig,
+/// Stratégie de réplication simplifiée (temporaire)
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ReplicationStrategy {
+    /// Réplication basée sur la popularité
+    PopularityBased { min_copies: u8, max_copies: u8 },
+    /// Réplication fixe
+    Fixed { copies: u8 },
+    /// Réplication géographique
+    Geographic { regions: Vec<String> },
 }
 
-impl Default for GlobalStorageConfig {
-    fn default() -> Self {
-        Self {
-            replication: replication::ReplicationConfig::default(),
-            distribution: distribution::DistributionConfig::default(),
-            discovery: discovery::DiscoveryConfig::default(),
-            archive: archive::ArchiveConfig::default(),
-            bandwidth: bandwidth::BandwidthConfig::default(),
-            metrics: metrics::MetricsConfig::default(),
+impl ReplicationStrategy {
+    /// Crée une stratégie basée sur les métadonnées
+    pub fn from_metadata(metadata: &ContentMetadata) -> Self {
+        match metadata.importance {
+            ContentImportance::Critical => Self::Fixed { copies: 15 },
+            ContentImportance::High => Self::PopularityBased { min_copies: 5, max_copies: 10 },
+            ContentImportance::Medium => Self::PopularityBased { min_copies: 3, max_copies: 7 },
+            ContentImportance::Low => Self::Fixed { copies: 3 },
         }
     }
 }
+
+/// Métriques de stockage simplifiées (temporaire)
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StorageMetrics {
+    /// Capacité totale de stockage
+    pub total_capacity: u64,
+    /// Espace utilisé
+    pub used_capacity: u64,
+    /// Nombre de fichiers stockés
+    pub file_count: u64,
+    /// Débit moyen
+    pub average_throughput: f64,
+}
+
+/// Requête de recherche simplifiée (temporaire)
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SearchQuery {
+    /// Termes de recherche
+    pub terms: Vec<String>,
+    /// Filtres
+    pub filters: HashMap<String, String>,
+    /// Limite de résultats
+    pub limit: Option<usize>,
+}
+
+/// Résultats de recherche simplifiés (temporaire)
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SearchResults {
+    /// Métadonnées des contenus trouvés
+    pub results: Vec<ContentMetadata>,
+    /// Nombre total de résultats
+    pub total_count: usize,
+    /// Temps de recherche en millisecondes
+    pub search_time_ms: u64,
+}
+
+/// Configuration globale du système de stockage
+// #[derive(Debug, Clone, Serialize, Deserialize)]
+// pub struct GlobalStorageConfig {
+//     /// Configuration de réplication
+//     pub replication: replication::ReplicationConfig,
+//     /// Configuration de distribution géographique
+//     pub distribution: distribution::DistributionConfig,
+//     /// Configuration de découverte de contenu
+//     pub discovery: discovery::DiscoveryConfig,
+//     /// Configuration d'archivage
+//     pub archive: archive::ArchiveConfig,
+//     /// Configuration de bande passante
+//     pub bandwidth: bandwidth::BandwidthConfig,
+//     /// Configuration des métriques
+//     pub metrics: metrics::MetricsConfig,
+// }
+
+// impl Default for GlobalStorageConfig {
+//     fn default() -> Self {
+//         Self {
+//             replication: replication::ReplicationConfig::default(),
+//             distribution: distribution::DistributionConfig::default(),
+//             discovery: discovery::DiscoveryConfig::default(),
+//             archive: archive::ArchiveConfig::default(),
+//             bandwidth: bandwidth::BandwidthConfig::default(),
+//             metrics: metrics::MetricsConfig::default(),
+//         }
+//     }
+// }
 
 /// Informations sur un nœud de stockage
 #[derive(Debug, Clone, Serialize, Deserialize)]

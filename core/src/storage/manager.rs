@@ -16,13 +16,14 @@ use crate::consensus::NodeId;
 use crate::error::Result;
 use super::{
     ContentMetadata, StorageNodeInfo, StorageResult, StorageStatus, AvailabilityInfo,
-    DistributedStorage, NodeType, StorageType,
-    // replication::{ReplicationManager, ReplicationConfig, ReplicationStrategy},
+    DistributedStorage, NodeType, StorageType, ReplicationStrategy, StorageMetrics,
+    SearchQuery, SearchResults,
+    // replication::{ReplicationManager, ReplicationConfig},
     // distribution::{DistributionManager, DistributionConfig},
-    // discovery::{ContentDiscovery, DiscoveryConfig, SearchQuery, SearchResults},
+    // discovery::{ContentDiscovery, DiscoveryConfig},
     // archive::{ArchiveStorage, ArchiveConfig},
     // bandwidth::{BandwidthManager, BandwidthConfig},
-    // metrics::{StorageMetrics, MetricsConfig},
+    // metrics::{MetricsConfig},
 };
 
 /// Configuration principale du gestionnaire de stockage
@@ -755,14 +756,15 @@ pub enum AlertSeverity {
 /// Métriques détaillées
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DetailedMetrics {
-    /// Métriques de stockage
-    pub storage_metrics: super::metrics::CurrentMetrics,
-    /// Métriques de réplication
-    pub replication_metrics: super::replication::ReplicationMetrics,
-    /// Statistiques de distribution
-    pub distribution_stats: super::distribution::DistributionStats,
-    /// Statistiques de découverte
-    pub discovery_stats: super::discovery::DiscoveryStats,
+    /// Métriques de stockage simplifiées
+    pub storage_metrics: StorageMetrics,
+    // TODO: Implement when these modules exist
+    // /// Métriques de réplication
+    // pub replication_metrics: super::replication::ReplicationMetrics,
+    // /// Statistiques de distribution
+    // pub distribution_stats: super::distribution::DistributionStats,
+    // /// Statistiques de découverte
+    // pub discovery_stats: super::discovery::DiscoveryStats,
 }
 
 #[cfg(test)]

@@ -9,7 +9,7 @@ use crate::crypto::{Hash, HashAlgorithm, compute_hash};
 use crate::error::Result;
 use super::{
     NodeId, ConsensusConfig, ConsensusScore, ConsensusProof,
-    storage_proof::{StorageProofManager, ConsensusConsensusStorageMetrics},
+    storage_proof::{StorageProofManager, StorageMetrics},
     bandwidth_proof::{BandwidthProofManager, BandwidthMetrics},
     longevity_proof::{LongevityProofManager, LongevityMetrics},
 };

@@ -13,7 +13,7 @@ use super::{NodeId, ConsensusConfig, ConsensusProof};
 
 /// Métriques de stockage pour le consensus (version simplifiée)
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub struct ConsensusConsensusStorageMetrics {
+pub struct StorageMetrics {
     /// Capacité totale de stockage
     pub total_capacity: u64,
     /// Espace utilisé
@@ -30,7 +30,7 @@ pub struct StorageProofManager {
     /// Configuration du consensus
     config: ConsensusConfig,
     /// Métriques de stockage par nœud
-    node_metrics: HashMap<NodeId, ConsensusStorageMetrics>,
+    node_metrics: HashMap<NodeId, StorageMetrics>,
     /// Défis actifs par nœud
     active_challenges: HashMap<NodeId, StorageChallenge>,
     /// Historique des preuves validées
@@ -41,7 +41,7 @@ pub struct StorageProofManager {
 
 /// Métriques de stockage pour un nœud
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ConsensusStorageMetrics {
+pub struct NodeStorageMetrics {
     /// Nœud concerné
     pub node_id: NodeId,
     /// Taille totale stockée (bytes)
@@ -155,7 +155,7 @@ impl StorageProofManager {
     pub fn register_storage(&mut self, node_id: NodeId, archive_hash: Hash, size_bytes: u64) {
         // Met à jour les métriques du nœud
         let metrics = self.node_metrics.entry(node_id.clone()).or_insert_with(|| {
-            ConsensusStorageMetrics {
+            NodeStorageMetrics {
                 node_id: node_id.clone(),
                 total_stored_bytes: 0,
                 archive_count: 0,

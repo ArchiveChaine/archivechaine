@@ -77,7 +77,7 @@ use std::time::Duration;
 use crate::crypto::{Hash, PublicKey};
 use crate::consensus::NodeId;
 use crate::storage::{
-    // NodeType as StorageNodeType, StorageNodeInfo
+    NodeType as StorageNodeType, StorageNodeInfo
 };
 use crate::error::Result;
 

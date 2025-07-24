@@ -518,7 +518,7 @@ impl RewardSystem {
 
     /// Calcule la récompense d'archivage pour une contribution
     fn calculate_archival_reward(&self, contribution: &ArchivalContribution) -> TokenOperationResult<RewardAllocation> {
-        let mut base_amount = self.economic_model.base_archive_reward;
+        let base_amount = self.economic_model.base_archive_reward;
         let mut multipliers = Vec::new();
         let mut bonuses = Vec::new();
 
