@@ -486,7 +486,7 @@ impl FullArchiveNode {
             (metrics.storage_used + metrics.storage_available) as f64) * 100.0;
 
         if usage_percent > self.config.critical_storage_threshold {
-            log::warn!(
+            tracing::warn!(
                 "Stockage critique atteint: {:.1}% (seuil: {:.1}%)",
                 usage_percent,
                 self.config.critical_storage_threshold
@@ -546,7 +546,7 @@ impl Node for FullArchiveNode {
     }
 
     async fn start(&mut self) -> Result<()> {
-        log::info!("Démarrage du Full Archive Node: {:?}", self.node_id);
+        tracing::info!("Démarrage du Full Archive Node: {:?}", self.node_id);
 
         // Initialise le stockage
         {
@@ -577,12 +577,12 @@ impl Node for FullArchiveNode {
             *status = FullArchiveStatus::Operational;
         }
 
-        log::info!("Full Archive Node démarré avec succès");
+        tracing::info!("Full Archive Node démarré avec succès");
         Ok(())
     }
 
     async fn stop(&mut self) -> Result<()> {
-        log::info!("Arrêt du Full Archive Node: {:?}", self.node_id);
+        tracing::info!("Arrêt du Full Archive Node: {:?}", self.node_id);
 
         {
             let mut status = self.status.write().await;
@@ -600,7 +600,7 @@ impl Node for FullArchiveNode {
             connections.clear();
         }
 
-        log::info!("Full Archive Node arrêté");
+        tracing::info!("Full Archive Node arrêté");
         Ok(())
     }
 

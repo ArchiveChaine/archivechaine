@@ -134,14 +134,14 @@ pub enum SerializationError {
     UnsupportedFormat { format: String },
 }
 
-impl From<cbor4ii::serde::SerializeError> for SerializationError {
-    fn from(err: cbor4ii::serde::SerializeError) -> Self {
+impl From<cbor4ii::EncodeError> for SerializationError {
+    fn from(err: cbor4ii::EncodeError) -> Self {
         SerializationError::Cbor(err.to_string())
     }
 }
 
-impl From<cbor4ii::serde::DeserializeError> for SerializationError {
-    fn from(err: cbor4ii::serde::DeserializeError) -> Self {
+impl From<cbor4ii::DecodeError> for SerializationError {
+    fn from(err: cbor4ii::DecodeError) -> Self {
         SerializationError::Cbor(err.to_string())
     }
 }

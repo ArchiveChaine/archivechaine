@@ -23,8 +23,8 @@ pub use types::*;
 pub use auth::{AuthService, JwtClaims, AuthError, TokenInfo};
 pub use server::{ApiServer, ServerConfig, ServerHandle};
 pub use middleware::{
-    AuthMiddleware, RateLimitMiddleware, CorsMiddleware, 
-    CompressionMiddleware, RequestIdMiddleware
+    MiddlewareConfig, CorsConfig, RateLimitConfig, CompressionConfig, LoggingConfig,
+    cors_middleware, compression_middleware, tracing_middleware
 };
 pub use error::{ApiError, ApiResult};
 

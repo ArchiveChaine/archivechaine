@@ -311,7 +311,7 @@ impl LightStorageNode {
             match Regex::new(pattern) {
                 Ok(regex) => compiled_filters.push(regex),
                 Err(e) => {
-                    log::warn!("Erreur compilation regex '{}': {}", pattern, e);
+                    tracing::warn!("Erreur compilation regex '{}': {}", pattern, e);
                 }
             }
         }
@@ -576,7 +576,7 @@ impl LightStorageNode {
 
         if let Some(hash) = oldest_hash {
             cache.remove(&hash);
-            log::debug!("Éviction LRU du cache: {:?}", hash);
+            tracing::debug!("Éviction LRU du cache: {:?}", hash);
         }
     }
 
@@ -606,7 +606,7 @@ impl LightStorageNode {
                 keep
             });
             
-            log::info!(
+            tracing::info!(
                 "Optimisation cache: {} entrées supprimées, {:.2} MB libérés",
                 evicted_items,
                 total_space_freed as f64 / (1024.0 * 1024.0)
@@ -693,7 +693,7 @@ impl Node for LightStorageNode {
     }
 
     async fn start(&mut self) -> Result<()> {
-        log::info!("Démarrage du Light Storage Node: {:?}", self.node_id);
+        tracing::info!("Démarrage du Light Storage Node: {:?}", self.node_id);
 
         {
             let mut status = self.status.write().await;
@@ -728,12 +728,12 @@ impl Node for LightStorageNode {
             *status = LightStorageStatus::Operational;
         }
 
-        log::info!("Light Storage Node démarré avec succès");
+        tracing::info!("Light Storage Node démarré avec succès");
         Ok(())
     }
 
     async fn stop(&mut self) -> Result<()> {
-        log::info!("Arrêt du Light Storage Node: {:?}", self.node_id);
+        tracing::info!("Arrêt du Light Storage Node: {:?}", self.node_id);
 
         {
             let mut status = self.status.write().await;
@@ -749,7 +749,7 @@ impl Node for LightStorageNode {
             cache.clear();
         }
 
-        log::info!("Light Storage Node arrêté");
+        tracing::info!("Light Storage Node arrêté");
         Ok(())
     }
 
