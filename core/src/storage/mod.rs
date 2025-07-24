@@ -133,6 +133,10 @@ impl StorageMetrics {
             average_throughput: 0.0,
         }
     }
+    
+    pub fn get_current_metrics(&self) -> Self {
+        self.clone()
+    }
 }
 
 /// Requête de recherche simplifiée (temporaire)
@@ -167,6 +171,26 @@ impl ReplicationManager {
     pub fn new(_config: ()) -> Self {
         Self {}
     }
+    
+    pub fn update_available_nodes(&mut self, _nodes: &HashMap<NodeId, StorageNodeInfo>) -> Result<()> {
+        Ok(())
+    }
+    
+    pub fn get_strategy(&self, _content_hash: &Hash) -> Option<ReplicationStrategy> {
+        Some(ReplicationStrategy::Fixed { copies: 3 })
+    }
+    
+    pub fn update_strategy(&mut self, _content_hash: &Hash, _strategy: ReplicationStrategy) -> Result<()> {
+        Ok(())
+    }
+    
+    pub fn reevaluate_strategies(&mut self, _popular_content: &[Hash]) -> Result<()> {
+        Ok(())
+    }
+    
+    pub fn get_metrics(&self) -> StorageMetrics {
+        StorageMetrics::new(())
+    }
 }
 
 /// Gestionnaire de distribution temporaire
@@ -179,6 +203,18 @@ impl DistributionManager {
     pub fn new(_config: ()) -> Self {
         Self {}
     }
+    
+    pub fn update_node_info(&mut self, _nodes: &HashMap<NodeId, StorageNodeInfo>) -> Result<()> {
+        Ok(())
+    }
+    
+    pub fn optimize_distribution(&mut self, _target_nodes: &[NodeId]) -> Result<()> {
+        Ok(())
+    }
+    
+    pub fn get_distribution_stats(&self) -> StorageMetrics {
+        StorageMetrics::new(())
+    }
 }
 
 /// Système de découverte de contenu temporaire
@@ -190,6 +226,26 @@ pub struct ContentDiscovery {
 impl ContentDiscovery {
     pub fn new(_config: ()) -> Self {
         Self {}
+    }
+    
+    pub fn search(&self, _query: &SearchQuery) -> Result<SearchResults> {
+        Ok(SearchResults {
+            results: Vec::new(),
+            total_count: 0,
+            search_time_ms: 0,
+        })
+    }
+    
+    pub fn get_popular_content(&self, _limit: usize) -> Vec<Hash> {
+        Vec::new()
+    }
+    
+    pub fn cleanup(&mut self) -> Result<()> {
+        Ok(())
+    }
+    
+    pub fn get_stats(&self) -> StorageMetrics {
+        StorageMetrics::new(())
     }
 }
 
