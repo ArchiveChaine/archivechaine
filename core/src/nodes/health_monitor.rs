@@ -665,7 +665,7 @@ impl HealthMonitor {
             self.trigger_auto_recovery(node_id, &alert_type).await?;
         }
 
-        log::warn!("Alerte créée: {} - {} - {}", alert_type_to_string(&alert_type), severity_to_string(&severity), message);
+        tracing::warn!("Alerte créée: {} - {} - {}", alert_type_to_string(&alert_type), severity_to_string(&severity), message);
         Ok(())
     }
 
@@ -676,7 +676,7 @@ impl HealthMonitor {
         for channel in &alert_system.alert_channels {
             match channel {
                 AlertChannel::Log => {
-                    log::error!("ALERTE [{}]: {} - {}", 
+                    tracing::error!("ALERTE [{}]: {} - {}", 
                         severity_to_string(&alert.severity),
                         alert_type_to_string(&alert.alert_type),
                         alert.message
@@ -684,19 +684,19 @@ impl HealthMonitor {
                 },
                 AlertChannel::Email => {
                     // Simulation d'envoi d'email
-                    log::info!("Email d'alerte envoyé pour: {}", alert.alert_id);
+                    tracing::info!("Email d'alerte envoyé pour: {}", alert.alert_id);
                 },
                 AlertChannel::Webhook => {
                     // Simulation d'appel webhook
-                    log::info!("Webhook d'alerte appelé pour: {}", alert.alert_id);
+                    tracing::info!("Webhook d'alerte appelé pour: {}", alert.alert_id);
                 },
                 AlertChannel::Slack => {
                     // Simulation de notification Slack
-                    log::info!("Notification Slack envoyée pour: {}", alert.alert_id);
+                    tracing::info!("Notification Slack envoyée pour: {}", alert.alert_id);
                 },
                 AlertChannel::SMS => {
                     // Simulation d'envoi SMS
-                    log::info!("SMS d'alerte envoyé pour: {}", alert.alert_id);
+                    tracing::info!("SMS d'alerte envoyé pour: {}", alert.alert_id);
                 },
             }
         }
@@ -712,7 +712,7 @@ impl HealthMonitor {
         {
             let active_recoveries = auto_recovery.active_recoveries.read().await;
             if active_recoveries.contains_key(node_id) {
-                log::debug!("Récupération déjà en cours pour le nœud {:?}", node_id);
+                tracing::debug!("Récupération déjà en cours pour le nœud {:?}", node_id);
                 return Ok(());
             }
         }
@@ -747,7 +747,7 @@ impl HealthMonitor {
             stats.recoveries_attempted += 1;
         }
 
-        log::info!("Récupération automatique démarrée pour {:?}: {:?}", node_id, recovery_action);
+        tracing::info!("Récupération automatique démarrée pour {:?}: {:?}", node_id, recovery_action);
 
         // Simule l'exécution de l'action de récupération
         // Dans la réalité, cela appellerait les méthodes appropriées du nœud
@@ -758,7 +758,7 @@ impl HealthMonitor {
 
     /// Exécute une action de récupération
     async fn execute_recovery_action(&self, node_id: NodeId, action: RecoveryAction) -> Result<()> {
-        log::info!("Exécution de l'action de récupération {:?} pour {:?}", action, node_id);
+        tracing::info!("Exécution de l'action de récupération {:?} pour {:?}", action, node_id);
 
         // Simulation de l'exécution de l'action
         match action {
@@ -809,7 +809,7 @@ impl HealthMonitor {
             stats.recoveries_successful += 1;
         }
 
-        log::info!("Action de récupération {:?} terminée avec succès pour {:?}", action, node_id);
+        tracing::info!("Action de récupération {:?} terminée avec succès pour {:?}", action, node_id);
         Ok(())
     }
 

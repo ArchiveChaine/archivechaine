@@ -9,7 +9,7 @@ use crate::crypto::{Hash, HashAlgorithm, compute_hash};
 use crate::error::Result;
 use super::{
     NodeId, ConsensusConfig, ConsensusScore, ConsensusProof,
-    storage_proof::{StorageProofManager, StorageMetrics},
+    storage_proof::{StorageProofManager, ConsensusConsensusStorageMetrics},
     bandwidth_proof::{BandwidthProofManager, BandwidthMetrics},
     longevity_proof::{LongevityProofManager, LongevityMetrics},
 };
@@ -95,7 +95,7 @@ impl ProofOfArchive {
             match self.calculate_consensus_score(node_id) {
                 Ok(score) => scores.push(score),
                 Err(e) => {
-                    log::warn!("Erreur lors du calcul du score pour le nœud {:?}: {}", node_id, e);
+                    tracing::warn!("Erreur lors du calcul du score pour le nœud {:?}: {}", node_id, e);
                     continue;
                 }
             }

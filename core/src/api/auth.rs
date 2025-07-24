@@ -174,8 +174,8 @@ pub enum AuthError {
 impl From<AuthError> for ApiError {
     fn from(err: AuthError) -> Self {
         match err {
-            AuthError::InvalidToken(msg) | AuthError::TokenExpired => {
-                ApiError::Authentication(err.to_string())
+            AuthError::InvalidToken(_) | AuthError::TokenExpired => {
+                ApiError::Authentication("Invalid or expired token".to_string())
             }
             AuthError::InsufficientPermissions { .. } => {
                 ApiError::Authorization(err.to_string())

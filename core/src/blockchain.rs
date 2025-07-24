@@ -8,7 +8,7 @@ use crate::state::{StateMachine, StateStorage, MemoryStateStorage};
 use crate::error::{CoreError, Result};
 
 /// Configuration de la blockchain
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct BlockchainConfig {
     /// Algorithme de hachage principal
     pub hash_algorithm: HashAlgorithm,

@@ -477,7 +477,7 @@ impl MessageRouter {
             match route_result {
                 Some(next_hop) => {
                     // Simule l'envoi du message
-                    log::debug!("Routage message {:?} vers {:?}", 
+                    tracing::debug!("Routage message {:?} vers {:?}", 
                         queued_message.message.message_id, next_hop);
                     
                     let mut metrics = self.metrics.write().await;
@@ -786,7 +786,7 @@ impl Node for RelayNode {
     }
 
     async fn start(&mut self) -> Result<()> {
-        log::info!("Démarrage du Relay Node: {:?}", self.node_id);
+        tracing::info!("Démarrage du Relay Node: {:?}", self.node_id);
 
         {
             let mut status = self.status.write().await;
@@ -804,12 +804,12 @@ impl Node for RelayNode {
             *status = RelayNodeStatus::Operational;
         }
 
-        log::info!("Relay Node démarré avec succès");
+        tracing::info!("Relay Node démarré avec succès");
         Ok(())
     }
 
     async fn stop(&mut self) -> Result<()> {
-        log::info!("Arrêt du Relay Node: {:?}", self.node_id);
+        tracing::info!("Arrêt du Relay Node: {:?}", self.node_id);
 
         {
             let mut status = self.status.write().await;
@@ -831,7 +831,7 @@ impl Node for RelayNode {
             cache.clear();
         }
 
-        log::info!("Relay Node arrêté");
+        tracing::info!("Relay Node arrêté");
         Ok(())
     }
 

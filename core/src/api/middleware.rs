@@ -366,8 +366,7 @@ pub async fn logging_middleware(
         tracing::Level::INFO
     };
 
-    tracing::event!(
-        level,
+    tracing::info!(
         request_id = request_id,
         method = %method,
         path = path,

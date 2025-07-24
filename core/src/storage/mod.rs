@@ -9,39 +9,44 @@
 //! - Métriques et monitoring en temps réel
 
 pub mod manager;
-pub mod replication;
-pub mod distribution;
-pub mod discovery;
-pub mod archive;
-pub mod bandwidth;
-pub mod metrics;
+// pub mod replication;
+// pub mod distribution;
+// pub mod discovery;
+// pub mod archive;
+// pub mod bandwidth;
+// pub mod metrics;
 
 // Re-exports publics
-pub use manager::{StorageManager, StorageConfig, StorageStats};
-pub use replication::{
-    ReplicationStrategy, ReplicationManager, ContentImportance, 
-    ReplicationMetrics, AdaptiveReplication
+pub use manager::{
+    StorageManager, StorageConfig, StorageStats, StoragePolicy,
+    AlertThresholds, RetentionPolicy
 };
-pub use distribution::{
-    GeographicDistribution, Region, RegionInfo, PlacementStrategy,
-    DistributionManager, LatencyOptimizer
-};
-pub use discovery::{
-    ContentDiscovery, DistributedHashTable, ContentIndex, SearchCache,
-    PopularityTracker, SearchQuery, SearchResult
-};
-pub use archive::{
-    ArchiveStorage, CompressionConfig, EncryptionConfig, ChunkManager,
-    DeduplicationEngine, IntegrityChecker
-};
-pub use bandwidth::{
-    BandwidthManager, BandwidthLimits, PriorityQueues, QoSPolicies,
-    TransferManager, LoadBalancer
-};
-pub use metrics::{
-    StorageMetrics, PerformanceMetrics, HealthMetrics, AlertManager,
-    MetricsCollector, CapacityMonitor
-};
+// pub use replication::{
+//     ReplicationStrategy, ReplicationManager, ContentImportance, 
+//     ReplicationMetrics, AdaptiveReplication
+// };
+// pub use distribution::{
+//     GeographicDistribution, Region, RegionInfo, PlacementStrategy,
+//     DistributionManager, LatencyOptimizer
+// };
+// pub use discovery::{
+//     ContentDiscovery, DistributedHashTable, ContentIndex, SearchCache,
+//     PopularityTracker, SearchQuery, SearchResult, SearchResults
+// };
+// pub use archive::{
+//     ArchiveStorage, CompressionConfig, EncryptionConfig, ChunkManager,
+//     DeduplicationEngine, IntegrityChecker
+// };
+// pub use bandwidth::{
+//     BandwidthManager, BandwidthLimits, PriorityQueues, QoSPolicies,
+//     TransferManager, LoadBalancer
+// };
+// pub use metrics::{
+//     StorageMetrics, PerformanceMetrics, HealthMetrics, AlertManager,
+//     MetricsCollector, CapacityMonitor
+// };
+
+
 
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -49,6 +54,15 @@ use std::time::Duration;
 use crate::crypto::{Hash, PublicKey};
 use crate::consensus::NodeId;
 use crate::error::Result;
+
+/// Importance temporaire du contenu (version simplifiée)
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+pub enum ContentImportance {
+    Critical,
+    High,
+    Medium,
+    Low,
+}
 
 /// Types de nœuds de stockage
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -207,6 +221,10 @@ pub struct ContentMetadata {
     pub size: u64,
     /// Type MIME du contenu
     pub content_type: String,
+    /// Titre du contenu
+    pub title: Option<String>,
+    /// Description du contenu
+    pub description: Option<String>,
     /// Importance du contenu
     pub importance: ContentImportance,
     /// Popularité actuelle (accès/jour)

@@ -331,7 +331,7 @@ impl NodeRegistry {
         // Met à jour les statistiques
         self.update_stats().await;
 
-        log::info!("Nœud {:?} enregistré avec succès", node_id);
+        tracing::info!("Nœud {:?} enregistré avec succès", node_id);
         Ok(())
     }
 
@@ -372,7 +372,7 @@ impl NodeRegistry {
             // Met à jour les statistiques
             self.update_stats().await;
 
-            log::info!("Nœud {:?} supprimé du registre", node_id);
+            tracing::info!("Nœud {:?} supprimé du registre", node_id);
             Ok(())
         } else {
             Err(crate::error::CoreError::NotFound {
@@ -524,7 +524,7 @@ impl NodeRegistry {
         // - Annonces de découverte
         // - DHT lookups
 
-        log::debug!("Découverte automatique terminée: {} nouveaux nœuds", discovered);
+        tracing::debug!("Découverte automatique terminée: {} nouveaux nœuds", discovered);
         Ok(discovered)
     }
 
@@ -560,7 +560,7 @@ impl NodeRegistry {
         }
 
         if removed_count > 0 {
-            log::info!("Nettoyage terminé: {} nœuds inactifs supprimés", removed_count);
+            tracing::info!("Nettoyage terminé: {} nœuds inactifs supprimés", removed_count);
         }
 
         Ok(removed_count)
@@ -715,7 +715,7 @@ impl NodeRegistry {
     async fn load_persisted_data(&self) -> Result<()> {
         // Simulation de chargement des données persistées
         // Dans la réalité, on chargerait depuis un fichier JSON ou une base de données
-        log::debug!("Chargement des données persistées depuis {}", self.config.persistence_path);
+        tracing::debug!("Chargement des données persistées depuis {}", self.config.persistence_path);
         Ok(())
     }
 

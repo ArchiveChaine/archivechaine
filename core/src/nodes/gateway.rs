@@ -1171,7 +1171,7 @@ impl Node for GatewayNode {
     }
 
     async fn start(&mut self) -> Result<()> {
-        log::info!("Démarrage du Gateway Node: {:?}", self.node_id);
+        tracing::info!("Démarrage du Gateway Node: {:?}", self.node_id);
 
         // Configure les APIs
         self.configure_api_endpoints().await?;
@@ -1189,12 +1189,12 @@ impl Node for GatewayNode {
             *status = GatewayNodeStatus::Operational;
         }
 
-        log::info!("Gateway Node démarré avec succès");
+        tracing::info!("Gateway Node démarré avec succès");
         Ok(())
     }
 
     async fn stop(&mut self) -> Result<()> {
-        log::info!("Arrêt du Gateway Node: {:?}", self.node_id);
+        tracing::info!("Arrêt du Gateway Node: {:?}", self.node_id);
 
         {
             let mut status = self.status.write().await;
@@ -1211,7 +1211,7 @@ impl Node for GatewayNode {
             metadata_cache.clear();
         }
 
-        log::info!("Gateway Node arrêté");
+        tracing::info!("Gateway Node arrêté");
         Ok(())
     }
 
