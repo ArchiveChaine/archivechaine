@@ -1,0 +1,117 @@
+# Rust build artifacts
+/target/
+**/*.rs.bk
+*.pdb
+
+# Cargo
+Cargo.lock
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Node modules (for any JS tooling)
+node_modules/
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Keys and certificates
+*.key
+*.pem
+*.crt
+*.csr
+
+# Docker
+.docker/
+
+# Backup files
+*.bak
+*.backup
+
+# Test artifacts
+test-results/
+test-output/
+
+# Documentation build
+/docs/_build/
+/docs/site/
+
+# Local configuration
+config.local.*
+
+# Build output
+dist/
+build/
+
+# Archives
+*.zip
+*.tar.gz
+*.tar.bz2
+*.rar
+
+# Blockchain data (for development)
+blockchain-data/
+chain-data/
+storage-data/
+
+# Profiling data
+*.prof
+perf.data*
+
+# WASM build artifacts
+pkg/
+wasm-pack.log
+
+# Protocol buffer generated files
+*.pb.go
+*_pb2.py
+*_pb2_grpc.py
+
+# API documentation
+api-docs/generated/
+
+# Local development databases
+dev.db
+test.db

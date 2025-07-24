@@ -1,0 +1,86 @@
+[package]
+name = "archivechain-core"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+description = "Core blockchain functionality for ArchiveChain"
+
+[dependencies]
+# Workspace dependencies
+serde.workspace = true
+serde_json.workspace = true
+bincode.workspace = true
+cbor4ii.workspace = true
+blake3.workspace = true
+sha3.workspace = true
+ed25519-dalek.workspace = true
+rand.workspace = true
+chrono.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+tokio.workspace = true
+futures.workspace = true
+tracing.workspace = true
+flate2.workspace = true
+zstd.workspace = true
+
+# Additional dependencies for core
+hex = "0.4"
+uuid = { version = "1.6", features = ["v4", "serde"] }
+
+# Storage system dependencies
+async-trait = "0.1"
+tempfile = "3.8"
+
+# WASM and smart contracts dependencies
+wasmer = "3.3"
+wasmtime = "13.0"
+wasm-encoder = "0.36"
+wat = "1.0"
+
+# API framework dependencies
+axum = { version = "0.8", features = ["ws", "json", "tower-log", "macros"] }
+tower = { version = "0.4", features = ["full"] }
+tower-http = { version = "0.5", features = ["cors", "trace", "limit", "compression-br", "timeout"] }
+hyper = { version = "1.0", features = ["full"] }
+
+# GraphQL dependencies
+async-graphql = { version = "7.0", features = ["chrono", "uuid", "tracing"] }
+async-graphql-axum = "7.0"
+
+# gRPC dependencies
+tonic = { version = "0.10", features = ["tls"] }
+tonic-build = "0.10"
+prost = "0.12"
+
+# WebSocket dependencies
+tokio-tungstenite = { version = "0.21", features = ["native-tls"] }
+
+# JWT and authentication
+jsonwebtoken = "9.2"
+argon2 = "0.5"
+
+# P2P networking
+libp2p = { version = "0.53", features = ["tcp", "quic", "dns", "websocket", "noise", "yamux", "gossipsub", "mdns", "kad", "identify", "ping", "request-response", "autonat"] }
+
+# Rate limiting
+governor = "0.6"
+
+# HTTP client for external requests
+reqwest = { version = "0.11", features = ["json", "stream"] }
+
+# Additional serialization formats
+protobuf = "3.4"
+
+# Additional dependencies needed for compilation
+regex = "1.10"
+url = "2.5"
+futures-util = "0.3"
+tokio-stream = { version = "0.1", features = ["sync"] }
+
+[dev-dependencies]
+proptest.workspace = true
+tokio-test = "0.4"
